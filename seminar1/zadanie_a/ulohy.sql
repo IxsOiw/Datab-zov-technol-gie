@@ -69,3 +69,12 @@ SELECT c.region,
 FROM orders o
 INNER JOIN customers c ON o.customer_id = c.customer_id
 GROUP BY c.region;
+
+-- Uloha 11
+
+SELECT c.region,
+       COUNT(CASE WHEN o.sales > 1000 THEN 1 END) AS pocet_high_value,
+       COUNT(CASE WHEN o.sales <= 1000 THEN 1 END) AS pocet_low_value
+FROM orders o
+INNER JOIN customers c ON o.customer_id = c.customer_id
+GROUP BY c.region;
