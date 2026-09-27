@@ -78,3 +78,15 @@ SELECT c.region,
 FROM orders o
 INNER JOIN customers c ON o.customer_id = c.customer_id
 GROUP BY c.region;
+
+-- Uloha 12
+
+SELECT c.customer_id,
+       c.customer_name,
+       SUM(o.sales) AS celkovy_predaj,
+       AVG(o.discount) AS priemerna_zlava,
+       COUNT(o.order_id) AS pocet_objednavok,
+       CASE WHEN SUM(o.sales) > 2500 THEN 'VIP' ELSE 'REGULAR' END AS typ_zakaznika
+FROM orders o
+INNER JOIN customers c ON o.customer_id = c.customer_id
+GROUP BY c.customer_id, c.customer_name;
