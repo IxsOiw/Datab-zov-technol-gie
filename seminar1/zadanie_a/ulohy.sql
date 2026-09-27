@@ -44,3 +44,10 @@ SELECT c.customer_name, COUNT(o.customer_id)
 FROM orders o 
 INNER JOIN customers c ON o.customer_id = c.customer_id
 GROUP BY c.customer_name;
+
+-- Uloha 8
+
+SELECT p.category, AVG(o.discount) AS priemerna_zlava
+FROM orders o
+INNER JOIN products p ON o.product_id = p.product_id
+GROUP BY p.category;
