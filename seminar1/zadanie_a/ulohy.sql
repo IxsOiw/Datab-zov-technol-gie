@@ -59,3 +59,13 @@ FROM orders o
 INNER JOIN customers c ON o.customer_id = c.customer_id
 GROUP BY c.customer_id, c.customer_name
 HAVING SUM(o.sales) > 2000;
+
+-- Uloha 10
+
+SELECT c.region,
+       SUM(o.sales) AS celkova_hodnota_predaja,
+       ROUND(AVG(o.discount),2) AS priemerna_zlava,
+       COUNT(o.order_id) AS pocet_objednavok
+FROM orders o
+INNER JOIN customers c ON o.customer_id = c.customer_id
+GROUP BY c.region;
