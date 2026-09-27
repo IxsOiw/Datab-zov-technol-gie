@@ -1,4 +1,5 @@
 -- Uloha 1
+
 SELECT o.order_id,c.customer_name,(sales * discount) as hodnota_predaja 
 FROM orders o 
 INNER JOIN customers c ON o.customer_id = c.customer_id
@@ -23,3 +24,9 @@ INNER JOIN customers c ON o.customer_id = c.customer_id
 SELECT p.product_name,(sales * discount) as hodnota_predaja 
 FROM orders o 
 INNER JOIN products p ON o.product_id = p.product_id;
+
+-- Uloha 5
+
+SELECT c.customer_name,o.order_id,(sales * discount) as hodnota_predaja 
+FROM orders o 
+INNER JOIN customers c ON o.customer_id = c.customer_id;
