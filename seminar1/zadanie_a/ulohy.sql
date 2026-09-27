@@ -11,3 +11,9 @@ SELECT o.order_id,c.customer_name,p.category,(sales * discount) as hodnota_preda
 FROM orders o 
 INNER JOIN customers c ON o.customer_id = c.customer_id
 INNER JOIN products p ON o.product_id = p.product_id;
+
+-- Uloha 3
+
+SELECT c.region, (sales * discount) as hodnota_predaja 
+FROM orders o
+INNER JOIN customers c ON o.customer_id = c.customer_id
