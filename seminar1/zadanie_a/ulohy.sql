@@ -30,3 +30,10 @@ INNER JOIN products p ON o.product_id = p.product_id;
 SELECT c.customer_name,o.order_id,(sales * discount) as hodnota_predaja 
 FROM orders o 
 INNER JOIN customers c ON o.customer_id = c.customer_id;
+
+-- Uloha 6
+
+SELECT c.region, SUM(o.sales * o.discount) as hodnota_predaja
+FROM orders o
+INNER JOIN customers c ON o.customer_id = c.customer_id
+GROUP BY c.region;
