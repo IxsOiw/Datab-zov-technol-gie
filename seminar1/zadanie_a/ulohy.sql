@@ -37,3 +37,10 @@ SELECT c.region, SUM(o.sales * o.discount) as hodnota_predaja
 FROM orders o
 INNER JOIN customers c ON o.customer_id = c.customer_id
 GROUP BY c.region;
+
+-- Uloha 7
+
+SELECT c.customer_name, COUNT(o.customer_id)
+FROM orders o 
+INNER JOIN customers c ON o.customer_id = c.customer_id
+GROUP BY c.customer_name;
