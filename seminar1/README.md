@@ -1,5 +1,9 @@
 ## Fill data
 
+
+conections : postgresql://postgres:123@localhost:5432/"name"
+
+
 Naplnenie tabuliek dátami z CSV súborov pomocou `\copy` (poradie je dôležité kvôli cudzím kľúčom — `customers` a `products` musia byť naplnené pred `orders`):
 
 ```sql
