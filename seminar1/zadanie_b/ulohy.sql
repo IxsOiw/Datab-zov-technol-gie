@@ -27,3 +27,10 @@ SELECT product_name, total_amount,(
 from flourmills_sales
 WHERE total_amount = 9511208.41;
 
+-- Uloha 4
+
+SELECT product_name, total_amount, total_amount / ( 
+  SELECT (sum(total_amount)) from flourmills_sales 
+) as amount_share
+from flourmills_sales
+Limit 5;
