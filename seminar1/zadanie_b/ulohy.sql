@@ -19,3 +19,11 @@ WHERE product_category = (
     LIMIT 1
 )
 ORDER BY sales_id ASC;
+
+-- Uloha 3
+
+SELECT product_name, total_amount,( 
+  SELECT AVG(total_amount) from flourmills_sales) as avg_amount
+from flourmills_sales
+WHERE total_amount = 9511208.41;
+
