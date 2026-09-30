@@ -59,3 +59,16 @@ FROM (
 ) AS monthly
 ORDER BY month DESC;
 
+-- Uloha 6
+
+select * from 
+(
+  select
+    product_category, 
+    sum(total_amount) total_amount
+  from flourmills_sales
+  GROUP by product_category
+) as category_sales
+WHERE total_amount > 50000000
+order by total_amount desc;
+
