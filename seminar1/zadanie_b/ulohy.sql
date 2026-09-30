@@ -34,3 +34,28 @@ SELECT product_name, total_amount, total_amount / (
 ) as amount_share
 from flourmills_sales
 Limit 5;
+
+-- Uloha 5
+
+-- pokus 1 tak trochu som iba spocital predaje za dany mesiac ale zabudol spocitat hodnotu predajov 
+
+select * 
+FROM(
+  SELECT EXTRACT(MONTH FROM sale_date) AS mouth,
+        COUNT(*) AS mouthly_sales 
+  FROM flourmills_sales
+  GROUP BY EXTRACT(MONTH FROM sale_date)
+  ORDER BY mouth
+);
+
+-- pokus 2 uz som spocital sum(total_amount)
+
+SELECT month, monthly_sales
+FROM (
+    SELECT EXTRACT(MONTH FROM sale_date) AS month,
+           SUM(total_amount) AS monthly_sales
+    FROM flourmills_sales
+    GROUP BY EXTRACT(MONTH FROM sale_date)
+) AS monthly
+ORDER BY month DESC;
+
