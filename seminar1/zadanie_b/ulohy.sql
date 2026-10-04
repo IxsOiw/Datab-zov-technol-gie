@@ -141,3 +141,14 @@ WHERE EXISTS (
     GROUP BY t2.product_category
     HAVING COUNT(DISTINCT t2.region) > 3
 );
+
+-- Uloha 12
+
+SELECT t1.*
+FROM flourmills_sales AS t1
+WHERE EXISTS (
+    SELECT 1
+    FROM flourmills_sales AS t2
+    WHERE t2.region = t1.region
+      AND EXTRACT(YEAR FROM t2.sale_date) = 2024
+);
