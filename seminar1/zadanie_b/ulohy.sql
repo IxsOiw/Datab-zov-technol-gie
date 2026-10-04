@@ -119,3 +119,14 @@ WHERE EXISTS (
     GROUP BY t2.product_name
     HAVING COUNT(DISTINCT EXTRACT(MONTH FROM t2.sale_date)) > 1
 );
+
+-- Uloha 10
+select t1.*
+from flourmills_sales as t1
+where exists (
+    select 1
+    from flourmills_sales as t2
+    where t2.product_category = t1.product_category
+      and t2.total_amount > 200000
+);
+
