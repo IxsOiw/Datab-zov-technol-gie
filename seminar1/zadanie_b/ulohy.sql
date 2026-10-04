@@ -72,3 +72,25 @@ select * from
 WHERE total_amount > 50000000
 order by total_amount desc;
 
+-- uloha 7
+
+SELECT
+    t1.product_name,
+    t1.product_category,
+    t1.total_amount
+FROM flourmills_sales AS t1
+WHERE t1.total_amount > (
+    SELECT AVG(t2.total_amount)
+    FROM flourmills_sales AS t2
+    WHERE t2.product_category = t1.product_category
+);
+
+
+SELECT COUNT(*) AS pocet
+FROM flourmills_sales AS t1
+WHERE t1.total_amount > (
+    SELECT AVG(t2.total_amount)
+    FROM flourmills_sales AS t2
+    WHERE t2.product_category = t1.product_category
+);
+
