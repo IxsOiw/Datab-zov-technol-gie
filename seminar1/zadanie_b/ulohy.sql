@@ -130,3 +130,14 @@ where exists (
       and t2.total_amount > 200000
 );
 
+-- Uloha 11
+
+SELECT DISTINCT t1.product_category
+FROM flourmills_sales AS t1
+WHERE EXISTS (
+    SELECT 1
+    FROM flourmills_sales AS t2
+    WHERE t2.product_category = t1.product_category
+    GROUP BY t2.product_category
+    HAVING COUNT(DISTINCT t2.region) > 3
+);
