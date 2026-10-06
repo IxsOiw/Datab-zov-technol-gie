@@ -12,3 +12,19 @@ HAVING SUM(t2.sales) > 2000;
 
 SELECT *
 FROM high_value_customers;
+
+-- Uloha 2
+
+create view regional_monthly_sales as 
+select t1.region, 
+       date_trunc('month', t2.order_date) as month,
+       sum(sales) as mouthly_sales 
+from customers t1
+inner join orders t2 
+         on t1.customer_id = t2.customer_id
+group by t1.region, date_trunc('month',order_date)
+order by t1.region, month;
+
+select * from regional_monthly_sales
+where region = 'West'
+
