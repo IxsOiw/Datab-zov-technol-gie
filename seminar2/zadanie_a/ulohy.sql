@@ -28,3 +28,12 @@ order by t1.region, month;
 select * from regional_monthly_sales
 where region = 'West'
 
+-- Uloha 3
+
+CREATE INDEX idx_orders_customer_id
+ON orders(customer_id);
+
+SELECT * FROM orders
+WHERE customer_id = 'C001';
+
+
