@@ -62,3 +62,29 @@ WHERE c.region = 'West' and customer_name = 'Customer_25'
   AND o.order_date >= DATE '2024-01-01';
 
 
+-- Uloha 9
+
+select customer_id, sum(sales) from orders
+group by customer_id;
+
+--  CUST00733   | 33653.49
+
+DROP PROCEDURE get_customer_sales(character varying)
+
+CREATE OR REPLACE PROCEDURE get_customer_sales(
+  p_customer_id VARCHAR)
+LANGUAGE plpgsql
+AS $procedure$
+DECLARE
+  p_total numeric default NULL;
+BEGIN
+    SELECT SUM(sales)
+    INTO p_total
+    FROM orders
+    WHERE orders.customer_id = p_customer_id;
+
+    RAISE NOTICE '% -> %', p_customer_id, p_total;
+END;
+$procedure$;
+
+CALL get_customer_sales('CUST00733');
