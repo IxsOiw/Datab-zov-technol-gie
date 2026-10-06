@@ -145,3 +145,30 @@ from orders
 group by region
 order by region;
 
+-- Uloha 11
+select sum(sales) from orders 
+where order_date BETWEEN '2024-01-01' and '2024-03-31'
+--  2018766.23
+
+
+create or replace procedure get_sales_between
+(
+  start_date      DATE,
+  end_date        DATE
+)
+language plpgsql
+as $procedure$
+DECLARE
+  p_total numeric default null;
+begin
+  select sum(sales)
+  into p_total
+  from orders
+  where order_date BETWEEN start_date and end_date;
+
+  Raise notice 'start -> % end -> % total -> %',start_date, end_date, p_total;
+end;
+$procedure$;
+
+CALL get_sales_between('2024-01-01','2024-03-31')
+-- NOTICE:  start -> 2024-01-01 end -> 2024-03-31 total -> 2018766.23
