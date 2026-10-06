@@ -88,3 +88,60 @@ END;
 $procedure$;
 
 CALL get_customer_sales('CUST00733');
+
+-- Uloha 10
+
+/*
+select region,
+       sum(sales) as spolu,
+       sum(sales) * (1 - 0.10) as po_zlave
+from orders
+group by region;
+
+ region  |    spolu    |   po_zlave    
+---------+-------------+---------------
+ South   | 25135562.15 | 22622005.9350
+ West    | 25336941.56 | 22803247.4040
+ East    | 24804536.17 | 22324082.5530
+ Central | 25018947.91 | 22517053.1190
+
+ Central | 25018947.91
+ East    | 24804536.17
+ South   | 25135562.15
+ West    | 16623610.54
+
+ */
+
+DROP PROCEDURE apply_regional_discount(character varying,numeric) 
+
+CREATE OR REPLACE PROCEDURE apply_regional_discount(
+  p_region VARCHAR,
+  p_discount_rate NUMERIC
+)
+LANGUAGE plpgsql
+AS $procedure$
+DECLARE
+  v_rows INTEGER;
+BEGIN
+    UPDATE orders
+    SET sales = sales * (1 - p_discount_rate)
+    WHERE region = p_region;
+
+    GET DIAGNOSTICS v_rows = ROW_COUNT;
+
+    RAISE NOTICE ' % -> % -> rows ? %',
+                 p_discount_rate, p_region, v_rows;
+END;
+$procedure$;
+
+CALL apply_regional_discount('West', 0.10);
+-- NOTICE: 0.10 -> West -> rows ? 25231
+
+select count(*) from orders where region = 'West'
+--  rows 25231
+
+select region, round(sum(sales), 2) as spolu
+from orders
+group by region
+order by region;
+
