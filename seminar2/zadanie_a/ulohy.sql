@@ -47,4 +47,18 @@ FROM orders
 GROUP BY DATE_TRUNC('month', order_date)
 ORDER BY month;
 
+-- Uloha 5
+
+create index idx_orders_region_category
+on orders(customer_id,order_date);
+
+SELECT o.*,
+       c.customer_name,
+       c.region
+FROM orders o
+JOIN customers c
+  ON o.customer_id = c.customer_id
+WHERE c.region = 'West' and customer_name = 'Customer_25'
+  AND o.order_date >= DATE '2024-01-01';
+
 
