@@ -9,3 +9,13 @@ select * from daily_sales
 where total_daily_sales > 30000000
 order by total_daily_sales desc
 limit 5;
+
+-- Uloha 2
+
+with category_sales as 
+(
+  select product_category, sum(total_amount) as celkovo from flourmills_sales
+  group by product_category
+)
+select * from category_sales
+order by celkovo desc;
