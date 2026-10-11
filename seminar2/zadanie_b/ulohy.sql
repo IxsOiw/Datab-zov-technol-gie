@@ -19,3 +19,32 @@ with category_sales as
 )
 select * from category_sales
 order by celkovo desc;
+
+-- Uloha 3
+WITH cte_1 AS (
+    SELECT
+        product_category,
+        product_name,
+        SUM(total_amount) AS total_product_sales
+    FROM flourmills_sales
+    GROUP BY product_category, product_name
+),
+cte_2 AS (
+    SELECT
+        product_category,
+        product_name,
+        total_product_sales,
+        RANK() OVER (
+            PARTITION BY product_category
+            ORDER BY total_product_sales DESC
+        ) AS category_rank
+    FROM cte_1
+)
+SELECT
+    product_category,
+    product_name,
+    total_product_sales,
+    category_rank
+FROM cte_2
+WHERE category_rank <= 3
+ORDER BY product_category, category_rank;
