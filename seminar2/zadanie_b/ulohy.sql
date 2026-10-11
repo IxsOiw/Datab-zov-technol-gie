@@ -90,3 +90,26 @@ FROM cte
 WHERE rn = 1
 ORDER BY customer_id ASC
 limit 5;
+
+-- Uloha 6
+
+WITH RECURSIVE cte_1 AS (
+    SELECT
+        MIN(sale_date) AS start_date,
+        MAX(sale_date) AS end_date
+    FROM flourmills_sales
+),
+cte_2 AS (
+    SELECT start_date AS sale_date, end_date
+    FROM cte_1
+
+    UNION ALL
+
+    SELECT sale_date + 1, end_date
+    FROM cte_2
+    WHERE sale_date < end_date
+)
+SELECT sale_date
+FROM cte_2
+ORDER BY sale_date;
+
