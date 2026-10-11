@@ -48,3 +48,21 @@ SELECT
 FROM cte_2
 WHERE category_rank <= 3
 ORDER BY product_category, category_rank;
+
+-- Uloha 4 
+
+WITH cte_1 AS (
+    SELECT customer_type, SUM(total_amount) AS revenue
+    FROM flourmills_sales
+    GROUP BY customer_type
+),
+cte_2 AS (
+    SELECT
+        customer_type,
+        revenue,
+        SUM(revenue) OVER () AS total_revenue,
+        ROUND(revenue * 100.0 / SUM(revenue) OVER (), 2) AS revenue_percentage
+    FROM cte_1
+)
+SELECT *
+FROM cte_2;
