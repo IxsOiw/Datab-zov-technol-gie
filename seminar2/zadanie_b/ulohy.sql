@@ -113,3 +113,46 @@ SELECT sale_date
 FROM cte_2
 ORDER BY sale_date;
 
+-- Uloha 7 
+
+WITH RECURSIVE cte_1 AS (
+    SELECT
+        DATE_TRUNC('month', sale_date) AS month,
+        SUM(total_amount) AS revenue
+    FROM flourmills_sales
+    GROUP BY DATE_TRUNC('month', sale_date)
+),
+cte_2 AS (
+    SELECT
+        ROW_NUMBER() OVER (ORDER BY month) AS rn,
+        month,
+        revenue
+    FROM cte_1
+),
+cte_3 AS (
+    SELECT
+        rn,
+        month,
+        revenue,
+        revenue AS cumulative_revenue
+    FROM cte_2
+    WHERE rn = 1
+
+    UNION ALL
+
+    SELECT
+        c2.rn,
+        c2.month,
+        c2.revenue,
+        c3.cumulative_revenue + c2.revenue AS cumulative_revenue
+    FROM cte_3 AS c3
+    JOIN cte_2 AS c2
+        ON c2.rn = c3.rn + 1
+)
+SELECT
+    month,
+    cumulative_revenue
+FROM cte_3
+WHERE cumulative_revenue >= 500000000
+ORDER BY month
+LIMIT 1;
