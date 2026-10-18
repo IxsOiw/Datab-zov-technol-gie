@@ -104,3 +104,22 @@ SELECT
 FROM product_totals
 ORDER BY category, pct_of_category DESC;
 
+-- Uloha 6
+
+SELECT DISTINCT
+    customer_id,
+    customer_name,
+    last_order_date
+FROM (
+    SELECT
+        c.customer_id,
+        c.customer_name,
+        o.order_date,
+        MAX(o.order_date) OVER (PARTITION BY o.customer_id) AS last_order_date,
+        MAX(o.order_date) OVER ()                           AS latest_order_date
+    FROM orders o
+    JOIN customers c ON c.customer_id = o.customer_id
+) t
+WHERE last_order_date < latest_order_date - INTERVAL '90 days'
+ORDER BY last_order_date, customer_id;
+
