@@ -65,3 +65,38 @@ FROM orders_with_neighbors
 WHERE next_invoice_date IS NOT NULL
 ORDER BY days_to_next_invoice DESC
 limit 4;
+
+-- Uloha 4
+
+WITH product_prices AS (
+    SELECT
+        stock_code,
+        invoice_no,
+        MIN(invoice_date) AS invoice_date,
+        MIN(unit_price)   AS unit_price
+    FROM retail_sales
+    GROUP BY stock_code, invoice_no
+),
+prices_with_previous AS (
+    SELECT
+        stock_code,
+        invoice_no,
+        invoice_date,
+        unit_price AS current_price,
+        LAG(unit_price) OVER (
+            PARTITION BY stock_code
+            ORDER BY invoice_date, invoice_no
+        ) AS previous_price
+    FROM product_prices
+)
+SELECT
+    stock_code,
+    invoice_no,
+    invoice_date,
+    previous_price,
+    current_price,
+    current_price - previous_price AS price_difference
+FROM prices_with_previous
+WHERE previous_price IS NOT NULL
+  AND current_price <> previous_price
+ORDER BY invoice_date ASC;
