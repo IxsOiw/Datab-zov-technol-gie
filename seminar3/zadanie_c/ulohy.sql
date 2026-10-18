@@ -168,3 +168,35 @@ SELECT
 FROM ranked_purchases
 WHERE rn = 1
 ORDER BY customer_id ASC;
+
+
+-- Uloha 8
+
+WITH ranked_items AS (
+    SELECT
+        invoice_no,
+        stock_code,
+        description,
+        quantity,
+        unit_price,
+        quantity * unit_price AS amount,
+        ROW_NUMBER() OVER (
+            PARTITION BY invoice_no
+            ORDER BY quantity * unit_price DESC, stock_code ASC
+        ) AS row_num
+    FROM retail_sales
+)
+    invoice_no,
+    stock_code,
+    description,
+    quantity,
+    unit_price,
+    amount,
+    row_num
+FROM ranked_items
+WHERE row_num <= 3
+ORDER BY invoice_no ASC, row_num ASC;
+
+SELECT row_num
+FROM ranked_items
+WHERE invoice_no = '536366' AND stock_code = '22632';
