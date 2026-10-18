@@ -15,7 +15,7 @@ SELECT
 FROM retail_sales  
 limit 3;
 
--- Uloha 3
+-- Uloha 2
 
 SELECT
     stock_code,
@@ -31,3 +31,37 @@ FROM retail_sales
 WHERE quantity > 1
 ORDER BY stock_code, country, invoice_date;
 
+-- Uloha 3
+
+(
+    SELECT
+        customer_id,
+        invoice_no,
+        MIN(invoice_date) AS invoice_date
+    FROM retail_sales
+    WHERE customer_id IS NOT NULL
+    GROUP BY customer_id, invoice_no
+),
+orders_with_neighbors AS (
+    SELECT
+        customer_id,
+        invoice_no,
+        invoice_date,
+        LAG(invoice_date) OVER w  AS previous_invoice_date,
+        LEAD(invoice_date) OVER w AS next_invoice_date
+    FROM unique_orders
+    WINDOW w AS (
+        PARTITION BY customer_id
+        ORDER BY invoice_date, invoice_no
+    )
+)
+SELECT
+    customer_id,
+    invoice_no,
+    invoice_date,
+    next_invoice_date,
+    next_invoice_date::date - invoice_date::date      AS days_to_next_invoice
+FROM orders_with_neighbors
+WHERE next_invoice_date IS NOT NULL
+ORDER BY days_to_next_invoice DESC
+limit 4;
