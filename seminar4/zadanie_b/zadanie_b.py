@@ -85,3 +85,24 @@ if missing_columns:
     )
 
 print("Všetky povinné stĺpce sú prítomné.")
+
+#%%
+#uloha 4
+
+import pandas as pd
+
+df = pd.read_csv("sales_data_dirty.csv")
+
+invalid_order_ids = df[
+    ~df["OrderID"].astype(str).str.match(r"^ORD\d{4}$", na=False)
+]
+
+duplicate_order_ids = df[
+    df.duplicated("OrderID", keep=False)
+]
+
+print("OrderID s nesprávnym formátom:")
+print(invalid_order_ids)
+
+print("\nDuplicitné OrderID:")
+print(duplicate_order_ids)
