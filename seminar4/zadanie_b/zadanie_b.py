@@ -61,3 +61,27 @@ except Exception as e:
 
 #%% 
 
+#uloha 3
+
+import pandas as pd
+
+df = pd.read_csv("sales_data_dirty.csv")
+
+required_columns = [
+    "OrderID",
+    "Region",
+    "Product",
+    "Quantity"
+]
+
+missing_columns = [
+    col for col in required_columns
+    if col not in df.columns
+]
+
+if missing_columns:
+    raise ValueError(
+        f"Chýbajú povinné stĺpce: {', '.join(missing_columns)}"
+    )
+
+print("Všetky povinné stĺpce sú prítomné.")
