@@ -11,9 +11,7 @@
 #     language: python
 #     name: python3-nvim
 # ---
-
 # %%
-
 #uloha 1
 import pandas as pd
 from pandas.errors import EmptyDataError, ParserError
@@ -36,3 +34,50 @@ except ParserError:
 
 except Exception as e:
     print(f"Nastala neočakávaná chyba: {e}")
+
+
+#%%
+
+#uloha 2
+try:
+    df = pd.read_csv("sales_data_dirty.csv")
+
+    print(f"Počet riadkov: {df.shape[0]}")
+    print(f"Počet stĺpcov: {df.shape[1]}")
+    print(df.head())
+
+except FileNotFoundError:
+    print("Chyba: Súbor sales_data_dirty.csv neexistuje.")
+
+except EmptyDataError:
+    print("Chyba: Súbor je prázdny.")
+
+except ParserError:
+    print("Chyba: Súbor má poškodenú alebo nesprávnu CSV štruktúru.")
+
+except Exception as e:
+    print(f"Nastala neočakávaná chyba: {e}")
+
+#%% 
+
+#uloha 3
+df = pd.read_csv("sales_data_dirty.csv")
+
+required_columns = [
+    "OrderID",
+    "Region",
+    "Product",
+    "Quantity"
+]
+
+missing_columns = [
+    col for col in required_columns
+    if col not in df.columns
+]
+
+if missing_columns:
+    raise ValueError(
+        f"Chýbajú povinné stĺpce: {', '.join(missing_columns)}"
+    )
+
+print("Všetky povinné stĺpce sú prítomné.")
